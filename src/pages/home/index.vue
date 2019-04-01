@@ -102,13 +102,26 @@ export default {
       mpvue.pageScrollTo({
         scrollTop: 0
       })
+    },
+    async initData () {
+      this.swiper = await this.queryData('home/swiperdata')
+      this.menu = await this.queryData('home/catitems')
+      this.floor = await this.queryData('home/floordata')
     }
   },
   mounted () {
     // 调用接口请求方法
-    this.swiperData()
-    this.menuData()
-    this.floorData()
+    // this.swiperData()
+    // this.menuData()
+    // this.floorData()
+    this.initData()
+  },
+  onPullDownRefresh () {
+    // 下拉刷新，重新加载页面的数据
+    // this.swiperData()
+    // this.menuData()
+    // this.floorData()
+    this.initData()
   },
   onPageScroll (event) {
     // 小程序生命周期函数，监控页面的滚动
