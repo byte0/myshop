@@ -10,7 +10,15 @@
         </div>
       </div>
       <div class="right">
-        
+        <div :key='item1.cat_id' v-for='item1 in rightData' class="brand-item">
+          <div class="brand-title">{{item1.cat_name}}</div>
+          <div class="brand-list">
+            <div :key='i' v-for='(img, i) in item1.children' class="brand">
+              <img :src="img.cat_icon" mode="aspectFill">
+              <p>{{img.cat_name}}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -23,7 +31,8 @@ export default {
   data () {
     return {
       cate: [],
-      currentIndex: 3
+      currentIndex: 0,
+      rightData: []
     }
   },
   components: {
@@ -36,8 +45,10 @@ export default {
       this.cate = ret.data.message
     }
   },
-  mounted () {
-    this.cateData()
+  async mounted () {
+    await this.cateData()
+    // 从全部分类数据中更加当前索引取出对应的右侧数据
+    this.rightData = this.cate[this.currentIndex].children
   }
 }
 </script>
