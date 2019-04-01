@@ -5,7 +5,9 @@
     <!-- 菜单和内容 -->
     <div class="content">
       <div class="left">
-        
+        <div :class='{active: currentIndex === index}' :key='item.cat_id' v-for='(item, index) in cate' class="menu-item">
+          {{item.cat_name}}
+        </div>
       </div>
       <div class="right">
         
@@ -20,7 +22,8 @@ import request from '../../utils/request.js'
 export default {
   data () {
     return {
-      cate: []
+      cate: [],
+      currentIndex: 3
     }
   },
   components: {
