@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- 搜索条 -->
-    <div class="search-bar">
-      <div class="search-input">
-        <!-- <icon type='search' color='#999'/> -->
-        <input placeholder="搜索" />
-      </div>
-    </div>
+    <search-bar></search-bar>
     <!-- 轮播图 -->
     <swiper indicator-dots='true'>
       <swiper-item :key='item.goods_id' v-for='item in swiper'>
@@ -44,6 +39,8 @@
 
 <script>
 import request from '../../utils/request.js'
+import SearchBar from '../../components/searchbar'
+
 export default {
   data () {
     return {
@@ -108,6 +105,9 @@ export default {
       this.menu = await this.queryData('home/catitems')
       this.floor = await this.queryData('home/floordata')
     }
+  },
+  components: {
+    'search-bar': SearchBar
   },
   mounted () {
     // 调用接口请求方法
