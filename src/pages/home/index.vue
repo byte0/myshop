@@ -9,10 +9,16 @@
     </div>
     <!-- 轮播图 -->
     <swiper indicator-dots='true'>
-      <swiper-item :key='item.goods_id' v-for='item in imgUrls'>
+      <swiper-item :key='item.goods_id' v-for='item in swiper'>
         <image :src="item.image_src" class="slide-image"/>
       </swiper-item>
     </swiper>
+    <!-- 菜单 -->
+    <div class="menu">
+      <div :key='index' v-for='(item, index) in menu' class="menu-item">
+        <img :src="item.image_src">
+      </div>
+    </div>
 
   </div>
 </template>
@@ -21,7 +27,8 @@
 export default {
   data () {
     return {
-      imgUrls: []
+      swiper: [],
+      menu: []
     }
   },
   methods: {
@@ -32,7 +39,19 @@ export default {
         url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata',
         success: function (res) {
           let {message} = res.data
-          that.imgUrls = message
+          that.swiper = message
+        }
+      })
+    },
+    menuData () {
+      // 请求后台接口获取轮播图数据
+      let that = this
+      mpvue.request({
+        url: 'https://www.zhengzhicheng.cn/api/public/v1/home/catitems',
+        success: function (res) {
+          let {message} = res.data
+          console.log(message)
+          that.menu = message
         }
       })
     }
@@ -40,6 +59,7 @@ export default {
   mounted () {
     // 调用接口请求方法
     this.swiperData()
+    this.menuData()
   }
 }
 </script>
@@ -55,5 +75,13 @@ export default {
 }
 .slide-image {
   width: 750rpx;
+}
+.menu {
+  display: flex;
+  justify-content: space-around;
+}
+.menu .menu-item img {
+  width: 128rpx;
+  height: 140rpx;
 }
 </style>
