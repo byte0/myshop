@@ -51,8 +51,12 @@ export default {
     confirmHandle () {
       // 当回车的时候，记录关键字到本地存储
       this.keywordHistory.unshift(this.keyword)
+      // 如何进行数组去重
+      let kwh = [...new Set(this.keywordHistory)]
       // 把最新的数据覆盖到本地存储中
-      mpvue.setStorageSync('keyword', this.keywordHistory)
+      mpvue.setStorageSync('keyword', kwh)
+      // 重新更新页面数据
+      this.keywordHistory = kwh
       // 跳转到商品列表页面
       mpvue.navigateTo({
         url: '/pages/search_list/main?query=' + this.keyword
