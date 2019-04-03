@@ -24,17 +24,33 @@ export default {
   data () {
     return {
       keyword: '',
-      searchResult: []
+      searchResult: [],
+      isLoading: false,
+      timer: null
     }
   },
   methods: {
     async inputHandle () {
       // 根据输入的关键字，调用后台接口查询匹配的数据
-      let res = await request('goods/qsearch', 'get', {
-        query: this.keyword
-      })
-      const {message} = res.data
-      this.searchResult = message
+      // 控制请求的频率(节流)：输入多个字符，但是只发送一次请求
+      // 控制是否发送请求
+      if (this.isLoading) {
+        // 终止后续代码的执行，终止请求
+        return
+      }
+      // isLoading变成true之后，就阻止的后续请求
+      this.isLoading = true
+      this.timer = setTimeout(async () => {
+        // 关闭之前的定时任务
+        clearTimeout(this.timer)
+        let res = await request('goods/qsearch', 'get', {
+          query: this.keyword
+        })
+        const {message} = res.data
+        this.searchResult = message
+        // 重新打开发送请求的开关
+        this.isLoading = false
+      }, 1000)
     }
   }
 }
