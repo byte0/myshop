@@ -4,7 +4,7 @@
       <div class="search-content">
         <div class="search-input">
           <icon type='search' size='16'/>
-          <input @input='searchGoods' v-model='keyword' placeholder="请输入关键字..." />
+          <input @confirm='confirmHandle' @input='searchGoods' v-model='keyword' placeholder="请输入关键字..." />
         </div>
         <button v-if='keyword' class="cancel">取消</button>
         <div v-if='keyword' class="search-modal">
@@ -13,7 +13,16 @@
           </div>
         </div>
       </div>
-    </div>  
+    </div>
+    <div class="history">
+      <h4>历史搜索</h4>
+      <icon type='clear' size='16'/>
+    </div>
+    <div class="history-list">
+      <div :key='index' v-for='(item, index) in keywordList' class="history-item">
+        {{item}}
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -25,10 +34,22 @@ export default {
       keyword: '',
       searchResult: [],
       isLoading: false,
-      timer: null
+      timer: null,
+      // 该属性的作用：存储搜索历史关键字，如果存在就获取；否则初始化为空数组
+      keywordList: mpvue.getStorageSync('keywordList') || []
     }
   },
   methods: {
+    confirmHandle () {
+      // 按回车键触发
+      // 回车之后需要做两件事：1、把关键字存储在本地缓存；2、根据关键字进行页面跳转
+      // 1、将关键字放入缓存
+      this.keywordList.unshift(this.keyword)
+      // 需要对重复的关键字进行去重
+
+      // 把原来的历史数据覆盖掉
+      mpvue.setStorageSync('keywordList', this.keywordList)
+    },
     async searchGoods () {
       // 根据关键字请求匹配到的商品列表数据
       // 防抖处理：如果请求正在进行，此时不允许再次发送请求，必须等到当前请求结果返回之后才可以再次发送请求
