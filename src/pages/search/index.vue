@@ -21,9 +21,11 @@
       <icon type='clear' size='16' @click='clearHistory'/>
     </div>
     <div class="history-list">
-      <div :key='index' v-for='(item, index) in keywordHistory' class="history-item">
-        {{item}}
-      </div>
+      <navigator :url='getUrl'>
+        <div :key='index' v-for='(item, index) in keywordHistory' class="history-item">
+          {{item}}
+        </div>
+      </navigator>
     </div>
   </div>
 </template>
@@ -38,6 +40,11 @@ export default {
       isLoading: false,
       timer: null,
       keywordHistory: mpvue.getStorageSync('keyword') || []
+    }
+  },
+  computed: {
+    getUrl () {
+      return '/pages/search_list/main?query=' + this.keyword
     }
   },
   methods: {
