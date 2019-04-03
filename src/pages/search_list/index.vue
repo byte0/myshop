@@ -8,7 +8,12 @@
         {{keyword}}
       </div>
     </div>
-
+    <!-- 选项卡 -->
+    <div class="tabs">
+      <div @click='tabHandle(index)' :class='{active: currentIndex === index}' :key='index' v-for='(item, index) in tabNames' class="tab-item">
+        {{item}}
+      </div>
+    </div>
 
 
 
@@ -19,7 +24,15 @@ import SearchBar from '../../components/searchbar'
 export default {
   data () {
     return {
-      keyword: ''
+      tabNames: ['综合', '销量', '价格'],
+      keyword: '',
+      currentIndex: 0
+    }
+  },
+  methods: {
+    tabHandle (index) {
+      // 修改当前tab的索引
+      this.currentIndex = index
     }
   },
   components: {

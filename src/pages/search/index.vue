@@ -42,16 +42,7 @@ export default {
       keywordHistory: mpvue.getStorageSync('keyword') || []
     }
   },
-  computed: {
-    // getUrl () {
-    //   return '/pages/search_list/main?query=' + this.keyword
-    // }
-  },
   methods: {
-    getUrl (kw) {
-      console.log(kw)
-      return '/pages/search_list/main?query=' + kw
-    },
     clearHistory () {
       // 清空搜索关键字的历史信息
       // 清空的是本地存储的数据（清空本地存储的数据并不会影响data中的数据）
