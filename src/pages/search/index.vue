@@ -23,17 +23,35 @@ export default {
   data () {
     return {
       keyword: '',
-      searchResult: []
+      searchResult: [],
+      isLoading: false,
+      timer: null
     }
   },
   methods: {
     async searchGoods () {
       // 根据关键字请求匹配到的商品列表数据
-      let res = await request('goods/qsearch', 'get', {
-        query: this.keyword
-      })
-      let {message} = res.data
-      this.searchResult = message
+      // 防抖处理：如果请求正在进行，此时不允许再次发送请求，必须等到当前请求结果返回之后才可以再次发送请求
+      // 1、如果标志位是false，就允许触发请求；如果是true就不允许触发请求
+      if (this.isLoading) {
+        // 终止后续代码的执行
+        return
+      }
+      // 2、禁止再次触发
+      this.isLoading = true
+      // 通过定时任务的方式延迟执行评率
+      this.timer = setTimeout(async () => {
+        // 关闭上次的定时任务
+        clearTimeout(this.timer)
+        // 发送请求
+        let res = await request('goods/qsearch', 'get', {
+          query: this.keyword
+        })
+        let {message} = res.data
+        this.searchResult = message
+        // 3、服务返回数据之后，放开isLoading开关
+        this.isLoading = false
+      }, 3000)
     }
   }
 }
