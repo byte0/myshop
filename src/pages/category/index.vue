@@ -41,6 +41,7 @@ export default {
   computed: {
     getRightData () {
       // 从cate数据中获取右侧的部分数据
+      // 计算属性的应用场景：对data中的数据进行加工处理，计算属性的结果依赖于data中的数据：data中的数据如果发生变化，那么计算属性的结果也会发生变化
       let data = this.cate.length > 0 && this.cate[this.currentIndex].children
       return data
     }
