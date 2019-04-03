@@ -3,6 +3,7 @@
     "pages/home/main",
     "pages/category/main",
     "pages/cart/main",
+    "pages/search/main",
     "pages/my/main"
   ],
   "window": {
