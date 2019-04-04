@@ -57,7 +57,7 @@
     <div class="cart-total">
       <!-- 左侧CheckBox -->
       <div class="total-button">
-        <icon type='success' size='18'/>全选
+        <icon @click='selectAll' :color="isAll?'red':'#eee'" type='success' size='18'/>全选
       </div>
       <!-- 中间的价格 -->
       <div class="total-center">
@@ -80,7 +80,8 @@ export default {
   data () {
     return {
       products: [],
-      address: null
+      address: null,
+      isAll: false
     }
   },
   computed: {
@@ -90,6 +91,18 @@ export default {
     }
   },
   methods: {
+    selectAll () {
+      // 实现所有商品的全部选中或者全部取消
+      // 实现思路：把products中所有商品的checked属性全部修改一遍
+      // 控制全选按钮的样式
+      this.isAll = !this.isAll
+      let products = [...this.products]
+      // 修改所有的商品的选中状态
+      products.forEach(item => {
+        item.cheched = this.isAll
+      })
+      this.products = products
+    },
     changeItemCheckbox (id) {
       // 控制每件商品的选中与否：本质上就是控制每件商品的checked属性值
       // 根据id去修改相应商品的checked（保证该值在true和false之家进行切换）
