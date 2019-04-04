@@ -42,7 +42,9 @@ export default {
       currentIndex: 0,
       list: [],
       pagenum: 1,
-      total: 0
+      total: 0,
+      // 保证接口调用完成之后才可以再次调用接口，如果接口正在获取数据，那么在这个过程中是不允许再次触发接口调用
+      isLoading: false
     }
   },
   methods: {
@@ -51,6 +53,12 @@ export default {
       this.currentIndex = index
     },
     async loadData () {
+      // 是否已经加载完成
+      if (this.isLoading) {
+        return
+      }
+      // 作用：禁止再次触发接口调用
+      this.isLoading = true
       // 根据关键字加载匹配的商品列表数据
       let res = await request('goods/search', 'get', {
         query: this.keyword,
@@ -65,6 +73,8 @@ export default {
 
       // 加载完成数据之后，让页码加1
       this.pagenum = this.pagenum + 1
+      // 接口数据返回之后，才允许再次发出请求
+      this.isLoading = false
     }
   },
   components: {
