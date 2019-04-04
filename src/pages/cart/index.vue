@@ -21,7 +21,7 @@
       <div :key='item.goods_id' v-for='item in products' class="ware-item">
         <!-- 左侧按钮checkbox -->
         <div class="choice-button">
-          <icon type='success' size='18'/>
+          <icon @click='changeItemCheckbox(item.goods_id)' :color="item.cheched?'red':'#eee'" type='success' size='18'/>
         </div>
         <!-- 右侧商品信息 -->
         <div class="ware-content">
@@ -90,6 +90,20 @@ export default {
     }
   },
   methods: {
+    changeItemCheckbox (id) {
+      // 控制每件商品的选中与否：本质上就是控制每件商品的checked属性值
+      // 根据id去修改相应商品的checked（保证该值在true和false之家进行切换）
+      let products = [...this.products]
+      products.some(item => {
+        if (item.goods_id === id) {
+          // 表示找到了要选中的商品
+          item.cheched = !item.cheched
+          // 终止遍历
+          return true
+        }
+      })
+      this.products = products
+    },
     getAddressInfo () {
       // 获取地址信息
       let that = this
@@ -107,10 +121,13 @@ export default {
       // 把cdata对象转化为数组
       let products = []
       for (let key in cdata) {
+        // 可以给每一件商品添加一个属性checked
+        // checked属性的作用：控制商品是否选中
+        cdata[key].cheched = false
         products.push(cdata[key])
       }
+      console.log(products)
       this.products = products
-      console.log(this.products)
     }
   },
   onLoad () {
