@@ -44,6 +44,26 @@
         </div>
       </div>
     </div>
+    <!-- 底部菜单 -->
+    <div class="cart-total">
+      <!-- 左侧CheckBox -->
+      <div class="total-button">
+        <icon type='success' size='18'/>全选
+      </div>
+      <!-- 中间的价格 -->
+      <div class="total-center">
+        <div class="total-price">合计：
+          <text class="colorRed">
+            <text>￥</text>
+          </text>
+        </div>
+        <div class="price-tips">包含运费</div>
+      </div>
+      <!-- 右侧结算按钮 -->
+      <div class="accounts">
+        结算
+      </div>
+    </div>
   </div>
 </template>
 <script>
