@@ -10,7 +10,38 @@
     <!-- 商品列表信息 -->
     <div class="ware-list">
       <div :key='item.goods_id' v-for='item in products' class="ware-item">
-        <div>{{item.goods_name}}</div>
+        <!-- 左侧按钮checkbox -->
+        <div class="choice-button">
+          <icon type='success' size='18'/>
+        </div>
+        <!-- 右侧商品信息 -->
+        <div class="ware-content">
+          <!-- 左侧图片 -->
+          <navigator class='ware-image'>
+            <img :src='item.goods_small_logo' mode="aspectFill"/>
+          </navigator>
+          <!-- 右侧商品信息 -->
+          <div class="ware-info">
+            <!-- 商品名称 -->
+            <navigator class='ware-title'>
+              {{item.goods_name}}
+            </navigator>
+            <!-- 商品价格和数量变更 -->
+            <div class="ware-info-btm">
+              <!-- 商品价格 -->
+              <div class="ware-price">
+                <span>￥</span>
+                {{item.goods_price}}
+              </div>
+              <!-- 数量变更 -->
+              <div class="calculate">
+                <div class="rect">-</div>
+                <div class="number">{{item.num}}</div>
+                <div class="rect">+</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
