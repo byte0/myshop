@@ -16,7 +16,7 @@
     </div>
     <!-- 商品的列表 -->
     <div class="goods-list">
-      <navigator class='goods-item' :key='index' v-for='(item, index) in list'>
+      <navigator :url="'/pages/goods_detail/main?goods_id=' + item.goods_id" class='goods-item' :key='index' v-for='(item, index) in list'>
         <img :src="item.goods_small_logo" mode="aspectFill"/>
         <div class="goods-right">
           <h4>
