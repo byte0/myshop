@@ -34,16 +34,22 @@
     <!-- 总价和支付 -->
     <div class="all-price">
       合计：<span>￥{{allPrice}}</span>
-      <button type="primary" >支付</button>
+      <button type="primary" @click='payHandle'>支付</button>
     </div>
   </div>
 </template>
 <script>
+import request from '../../utils/request.js'
+
 export default {
   data () {
     return {
+      // 地址
       address: null,
-      cart: null
+      // 购物车信息
+      cart: null,
+      // 订单号
+      orderNum: null
     }
   },
   computed: {
@@ -84,6 +90,35 @@ export default {
     //   console.log('----')
     //   return 'hello'
     // }
+    payHandle () {
+      // 完成支付动作
+      let token = mpvue.getStorageSync('mytoken')
+      request('my/orders/req_unifiedorder', 'post', {
+        order_number: this.orderNum
+      }, {
+        Authorization: token
+      }).then(res => {
+        // 这里返回的结果用于进行微信支付
+        // console.log(res)
+        let {message} = res.data
+        wx.requestPayment({
+          // 把pay对象中所有属性拆开放到这个位置
+          ...message.pay,
+          success () {
+            // 这里只要执行，就证明微信支付已经成功
+            // 成功之后，跳会到购物车,还应该清空已经支付的商品信息
+            mpvue.navigateBack({
+              delta: 1
+            })
+          }
+        })
+      })
+    }
+  },
+  onLoad (param) {
+    // 获取订单号
+    // console.log(param)
+    this.orderNum = param.order_num
   },
   onShow () {
     this.address = mpvue.getStorageSync('myAddress')
