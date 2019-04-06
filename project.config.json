@@ -10,7 +10,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wxb5f8e13cdffc3d4f",
+	"appid": "wxfb52f2d7b2f6123a",
 	"projectname": "myshop",
 	"condition": {
 		"search": {
