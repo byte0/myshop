@@ -87,7 +87,7 @@ export default {
           // 拼接地址对象
           this.address = {
             name: res.userName,
-            telNumber: res.telNumber,
+            telNumber: res.telNumber
           }
           // 把地址保存到本都
           wx.setStorageSync('myAddress', this.address)
