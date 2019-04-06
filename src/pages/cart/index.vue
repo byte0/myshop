@@ -137,6 +137,16 @@ export default {
       mpvue.setStorageSync('mycart', p)
     },
     toPay () {
+      // 判断用户是否选择了要购买的商品
+      let isSelected = this.orderGoods().length === 0
+      if (isSelected) {
+        // 用户没有选中商品，给一个提示并且终止提交订单
+        mpvue.showToast({
+          title: '请选择商品',
+          icon: 'success'
+        })
+        return
+      }
       // 去付款：必须保证先登录、要想登录需要微信用户进行授权
       // 所以要跳转到一个页面，在该页面让用户去点击按钮进行授权从而才能登录
       let token = mpvue.getStorageSync('mytoken')
