@@ -105,6 +105,8 @@ export default {
       // 去付款：必须保证先登录、要想登录需要微信用户进行授权
       // 所以要跳转到一个页面，在该页面让用户去点击按钮进行授权从而才能登录
       let token = mpvue.getStorageSync('mytoken')
+      // 如果这里获取到了token，那么，下一步就要进入订单确认页面
+      // 进入订单确认页面之后，就可以进行支付了
       console.log(token)
       if (token) {
         return
@@ -202,11 +204,11 @@ export default {
         cdata[key].cheched = false
         products.push(cdata[key])
       }
-      console.log(products)
       this.products = products
     }
   },
-  onLoad () {
+  onShow () {
+    // 这里的生命周期函数需要使用onShow，因为要触发多次（从后台显示该页面的时候就触发一次），不可以使用onLoad，因为onLoad之在页面加载的时候触发一次
     // 从本地存储中获取购物车商品信息
     this.getCartData()
     // 页面加载成功后，从本地存储中获取地址信息
