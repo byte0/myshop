@@ -103,7 +103,30 @@ export default {
   methods: {
     subHandle (id) {
       // 商品数量减一
-      console.log('-' + id)
+      // console.log('-' + id)
+      let products = [...this.products]
+      let currentIndex = -1
+      products.some((item, index) => {
+        if (item.goods_id === id) {
+          // 如果当前商品的数量是1，那么就删除该商品
+          // 如果当前商品的数量大于1，那么就进行减一操作
+          if (item.num === 1) {
+            // 记录一下当前商品的索引,接下来使用该索引把商品删除即可
+            currentIndex = index
+          } else {
+            // 商品数量减一
+            item.num = item.num - 1
+          }
+          // 终止遍历
+          return true
+        }
+      })
+      // 判断是否要删除商品
+      if (currentIndex !== -1) {
+        // 删除商品
+        products.splice(currentIndex, 1)
+      }
+      this.products = products
     },
     addHandle (id) {
       // 商品数量加一:根据id查询出products中的对应商品的信息，修改对应的num数量
