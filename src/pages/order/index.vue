@@ -23,22 +23,18 @@ export default {
       // 拼接一个完整的地址
       let {provinceName, cityName, countyName, detailInfo} = this.address
       let str = `${provinceName}${cityName}${countyName}${detailInfo}`
-      console.log(str)
       return str
     }
   },
-  // methods: {
-  //   joinAddress () {
-  //     // 拼接一个完整的地址
-  //     let {provinceName, cityName, countyName, detailInfo} = this.address
-  //     let str = `${provinceName}${cityName}${countyName}${detailInfo}`
-  //     console.log(str)
-  //     return str
-  //   }
-  // },
+  methods: {
+    // 在mpvue的插值表达式中，不可以直接使用函数调用
+    // joinAddress () {
+    //   console.log('----')
+    //   return 'hello'
+    // }
+  },
   onShow () {
     this.address = mpvue.getStorageSync('myAddress')
-    console.log(this.address)
   }
 }
 </script>
