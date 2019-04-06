@@ -76,6 +76,8 @@
   </div>
 </template>
 <script>
+import request from '../../utils/request.js'
+
 export default {
   data () {
     return {
@@ -116,13 +118,26 @@ export default {
       let token = mpvue.getStorageSync('mytoken')
       // 如果这里获取到了token，那么，下一步就要进入订单确认页面
       // 进入订单确认页面之后，就可以进行支付了
-      console.log(token)
-      if (token) {
-        return
+      // 用户授权并且登录微信平台之后进行创建订单的操作
+      let param = {
+        order_price: 1,
+        consignee_addr: '北京',
+        goods: [{
+          goods_id: 5,
+          goods_number: 11,
+          goods_price: 15
+        }]
       }
-      mpvue.navigateTo({
-        url: '/pages/auth/main'
+      request('my/orders/create', 'post', param, {
+        Authorization: token
+      }).then(res => {
+        // console.log(res)
+        // let orderNumber = res.data.message.order_number
+        console.log(res)
       })
+      // mpvue.navigateTo({
+      //   url: '/pages/auth/main'
+      // })
     },
     subHandle (id) {
       // 商品数量减一
