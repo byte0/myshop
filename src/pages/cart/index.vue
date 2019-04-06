@@ -63,7 +63,7 @@
       <div class="total-center">
         <div class="total-price">合计：
           <text class="colorRed">
-            <text>￥</text>
+            <text>￥</text>{{allPrice}}
           </text>
         </div>
         <div class="price-tips">包含运费</div>
@@ -85,6 +85,16 @@ export default {
     }
   },
   computed: {
+    allPrice () {
+      // 计算商品的总价：单价 * 数量 再相加
+      let sum = 0
+      // 计算总价
+      this.products.forEach(item => {
+        // 单价 * 数量 再相加
+        sum += item.goods_price * item.num
+      })
+      return sum
+    },
     detailAddress () {
       let {provinceName, cityName, countyName, detailInfo} = this.address
       return `${provinceName}${cityName}${countyName}${detailInfo}`
