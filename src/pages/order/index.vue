@@ -31,6 +31,11 @@
         </div>
       </div>
     </div>
+    <!-- 总价和支付 -->
+    <div class="all-price">
+      合计：<span>￥{{allPrice}}</span>
+      <button type="primary" >支付</button>
+    </div>
   </div>
 </template>
 <script>
@@ -42,6 +47,18 @@ export default {
     }
   },
   computed: {
+    allPrice () {
+      // 计算选中商品的总价
+      let sum = 0
+      for (let key in this.cart) {
+        let p = this.cart[key]
+        if (p.checked) {
+          // 选中的商品
+          sum += p.goods_price * p.num
+        }
+      }
+      return sum
+    },
     goodsData () {
       // 从购物车中取出商品放到数组中
       let products = []
