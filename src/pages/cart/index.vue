@@ -88,6 +88,36 @@ export default {
   },
   computed: {
     allPrice () {
+      // 计算属性的好处，支持缓存
+      return this.calcTotalPrice()
+    },
+    detailAddress () {
+      return this.joinAddress()
+    }
+  },
+  methods: {
+    orderGoods () {
+      // 生成要提交的订单的商品列表：选中的所有商品
+      let selectProducts = []
+      this.products.forEach(item => {
+        if (item.cheched) {
+          // 选中的商品
+          selectProducts.push({
+            goods_id: item.goods_id,
+            goods_number: item.num,
+            goods_price: item.goods_price
+          })
+        }
+      })
+      return selectProducts
+    },
+    joinAddress () {
+      // 拼接一个完整的地址
+      let {provinceName, cityName, countyName, detailInfo} = this.address
+      return `${provinceName}${cityName}${countyName}${detailInfo}`
+    },
+    calcTotalPrice () {
+      // 计算总价
       // 计算商品的总价：单价 * 数量 再相加
       let sum = 0
       // 计算总价
@@ -97,12 +127,6 @@ export default {
       })
       return sum
     },
-    detailAddress () {
-      let {provinceName, cityName, countyName, detailInfo} = this.address
-      return `${provinceName}${cityName}${countyName}${detailInfo}`
-    }
-  },
-  methods: {
     updateStorage () {
       // 把修改后的商品数据再次同步到本地存储中（修改了商品的数量）
       // 把数组重新转化为键值对存储到本地存储中：【goods_id: 商品对象信息】
@@ -120,20 +144,19 @@ export default {
       // 进入订单确认页面之后，就可以进行支付了
       // 用户授权并且登录微信平台之后进行创建订单的操作
       let param = {
-        order_price: 1,
-        consignee_addr: '北京',
-        goods: [{
-          goods_id: 5,
-          goods_number: 11,
-          goods_price: 15
-        }]
+        // 商品的总价
+        order_price: this.calcTotalPrice(),
+        // 收货地址
+        consignee_addr: this.joinAddress(),
+        // 购买的商品清单
+        goods: this.orderGoods()
       }
       request('my/orders/create', 'post', param, {
         Authorization: token
       }).then(res => {
-        // console.log(res)
-        // let orderNumber = res.data.message.order_number
-        console.log(res)
+        let {message} = res.data
+        let orderNumber = message.order_number
+        console.log(orderNumber)
       })
       // mpvue.navigateTo({
       //   url: '/pages/auth/main'
