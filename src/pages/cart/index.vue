@@ -21,7 +21,7 @@
       <div :key='item.goods_id' v-for='item in products' class="ware-item">
         <!-- 左侧按钮checkbox -->
         <div class="choice-button">
-          <icon @click='changeItemCheckbox(item.goods_id)' :color="item.cheched?'red':'#eee'" type='success' size='18'/>
+          <icon @click='changeItemCheckbox(item.goods_id)' :color="item.checked?'red':'#eee'" type='success' size='18'/>
         </div>
         <!-- 右侧商品信息 -->
         <div class="ware-content">
@@ -100,7 +100,7 @@ export default {
       // 生成要提交的订单的商品列表：选中的所有商品
       let selectProducts = []
       this.products.forEach(item => {
-        if (item.cheched) {
+        if (item.checked) {
           // 选中的商品
           selectProducts.push({
             goods_id: item.goods_id,
@@ -204,7 +204,7 @@ export default {
         products.splice(currentIndex, 1)
       }
       this.products = products
-      this.updateStorage()
+      // this.updateStorage()
     },
     addHandle (id) {
       // 商品数量加一:根据id查询出products中的对应商品的信息，修改对应的num数量
@@ -219,7 +219,7 @@ export default {
         }
       })
       this.products = products
-      this.updateStorage()
+      // this.updateStorage()
     },
     selectAll () {
       // 实现所有商品的全部选中或者全部取消
@@ -229,7 +229,7 @@ export default {
       let products = [...this.products]
       // 修改所有的商品的选中状态
       products.forEach(item => {
-        item.cheched = this.isAll
+        item.checked = this.isAll
       })
       this.products = products
     },
@@ -240,7 +240,7 @@ export default {
       products.some(item => {
         if (item.goods_id === id) {
           // 表示找到了要选中的商品
-          item.cheched = !item.cheched
+          item.checked = !item.checked
           // 终止遍历
           return true
         }
@@ -266,7 +266,7 @@ export default {
       for (let key in cdata) {
         // 可以给每一件商品添加一个属性checked
         // checked属性的作用：控制商品是否选中
-        cdata[key].cheched = false
+        cdata[key].checked = false
         products.push(cdata[key])
       }
       this.products = products
@@ -278,6 +278,10 @@ export default {
     this.getCartData()
     // 页面加载成功后，从本地存储中获取地址信息
     this.address = mpvue.getStorageSync('myAddress')
+  },
+  onHide () {
+    // 把商品相关信息同步到本地存储中
+    this.updateStorage()
   }
 }
 </script>
